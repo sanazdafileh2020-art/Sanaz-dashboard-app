@@ -24,11 +24,20 @@ export type State = {
 
 const FormSchema = z.object({
   id: z.string(),
-  customerId: z.string({
-    invalid_type_error: 'Please select a customer.',
-  }),
+  customerId: z
+    .string({
+      invalid_type_error: 'Please select a customer.',
+    })
+    .min(1, {
+      message: 'Please select a customer.',
+    }),
   amount: z.coerce
-    .number()
+    .number({
+      invalid_type_error: 'Please enter a valid amount.',
+    })
+    .finite({
+      message: 'Please enter a valid amount.',
+    })
     .gt(0, {
       message: 'Please enter an amount greater than $0.',
     }),
@@ -78,7 +87,7 @@ export async function createInvoice(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Create Invoice.',
+      message: 'Please correct the errors below and try again.',
     };
   }
 
@@ -117,7 +126,7 @@ export async function updateInvoice(
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Update Invoice.',
+      message: 'Please correct the errors below and try again.',
     };
   }
 
