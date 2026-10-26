@@ -19,6 +19,14 @@ const sql = postgres(process.env.POSTGRES_URL!, {
 
 // Fetch a single invoice by ID
 export async function fetchInvoiceById(id: string) {
+  const uuidRegex =
+    /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
+  // Return undefined if the ID is not a valid UUID
+  if (!uuidRegex.test(id)) {
+    return undefined;
+  }
+
   try {
     const data = await sql<InvoiceForm[]>`
       SELECT
@@ -42,7 +50,7 @@ export async function fetchInvoiceById(id: string) {
   }
 }
 
-// Fetch the latest five invoices
+// Fetch latest invoices
 export async function fetchLatestInvoices() {
   try {
     const data = await sql<LatestInvoiceRaw[]>`
@@ -66,7 +74,7 @@ export async function fetchLatestInvoices() {
     return latestInvoices;
   } catch (error) {
     console.error('Database Error:', error);
-    throw new Error('Failed to fetch the latest invoices.');
+    throw new Error('Failed to fetch latest invoices.');
   }
 }
 
@@ -143,6 +151,7 @@ export async function fetchRevenue(): Promise<Revenue[]> {
   }
 }
 
+// Number of invoices per page
 const ITEMS_PER_PAGE = 6;
 
 // Fetch filtered invoices with pagination
