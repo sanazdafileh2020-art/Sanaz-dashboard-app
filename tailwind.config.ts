@@ -1,3 +1,5 @@
+
+import forms from '@tailwindcss/forms';
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
@@ -18,15 +20,16 @@ const config: Config = {
           600: '#2F6FEB',
         },
       },
-    },
-    keyframes: {
-      shimmer: {
-        '100%': {
-          transform: 'translateX(100%)',
+      keyframes: {
+        shimmer: {
+          '100%': {
+            transform: 'translateX(100%)',
+          },
         },
       },
     },
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [forms],
 };
+
 export default config;
