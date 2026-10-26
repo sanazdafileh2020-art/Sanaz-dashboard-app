@@ -48,14 +48,15 @@ export default function Form({
           </label>
 
           <div className="relative">
-            <CustomerField
-              customers={customers}
-      
-            />
+            <CustomerField customers={customers} />
             <UserCircleIcon className="pointer-events-none absolute right-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
           </div>
 
-          <div id="customer-error" aria-live="polite">
+          <div
+            id="customer-error"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             {state.errors?.customerId?.map((error) => (
               <p className="mt-2 text-sm text-red-500" key={error}>
                 {error}
@@ -81,6 +82,8 @@ export default function Form({
               step="0.01"
               defaultValue={invoice.amount}
               placeholder="Enter USD amount"
+              aria-describedby="amount-error"
+              aria-invalid={Boolean(state.errors?.amount?.length)}
               className="block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2"
               required
             />
@@ -89,7 +92,11 @@ export default function Form({
             </span>
           </div>
 
-          <div id="amount-error" aria-live="polite">
+          <div
+            id="amount-error"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             {state.errors?.amount?.map((error) => (
               <p className="mt-2 text-sm text-red-500" key={error}>
                 {error}
@@ -113,6 +120,8 @@ export default function Form({
                   type="radio"
                   value="pending"
                   defaultChecked={invoice.status === 'pending'}
+                  aria-describedby="status-error"
+                  aria-invalid={Boolean(state.errors?.status?.length)}
                   className="h-4 w-4 cursor-pointer"
                 />
                 <label
@@ -131,6 +140,8 @@ export default function Form({
                   type="radio"
                   value="paid"
                   defaultChecked={invoice.status === 'paid'}
+                  aria-describedby="status-error"
+                  aria-invalid={Boolean(state.errors?.status?.length)}
                   className="h-4 w-4 cursor-pointer"
                 />
                 <label
@@ -144,7 +155,11 @@ export default function Form({
             </div>
           </div>
 
-          <div id="status-error" aria-live="polite">
+          <div
+            id="status-error"
+            aria-live="polite"
+            aria-atomic="true"
+          >
             {state.errors?.status?.map((error) => (
               <p className="mt-2 text-sm text-red-500" key={error}>
                 {error}
@@ -153,6 +168,7 @@ export default function Form({
           </div>
         </fieldset>
 
+        {/* General error message */}
         {state.message && (
           <p className="mt-4 text-sm text-red-500" aria-live="polite">
             {state.message}
